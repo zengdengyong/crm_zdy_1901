@@ -21,7 +21,8 @@
 			<div class="col-md-10">
 				<div class="panel panel-default">
 					
-					<!-- Table -->
+					
+					<!-- Table ================欢迎主页面-->
 					<div id="content">
 					
 						<!--文件上传  -->
@@ -93,6 +94,6 @@ $(function(){
 	
 
 	
-})
+}) 
 
 </script>

@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zdy.mapper.SysRoleMapper">
+
   <resultMap id="BaseResultMap" type="com.zdy.model.SysRole">
-    
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="dept_id" jdbcType="INTEGER" property="deptId" />
   </resultMap>
+  
+  <resultMap id="BaseResultMapVo" type="com.zdy.vo.RoleVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="dept_name" jdbcType="INTEGER" property="deptName" />
+  </resultMap>
+  
+  
   <sql id="Base_Column_List">
-    
-    id, name, type, remark
+    id, name, type, remark, dept_id
   </sql>
+  
+  <!--全表查询=====查询所有的角色信息  -->
+  <select id="selectAllRoles" resultMap="BaseResultMapVo">
+  	SELECT r.id,r.`name`,r.type,r.remark,d.dept_name  FROM sys_role r
+	LEFT JOIN sys_dept d
+	ON r.dept_id = d.id
+  </select>
+  
+  
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     
     select 
@@ -27,9 +48,9 @@
   <insert id="insert" parameterType="com.zdy.model.SysRole">
     
     insert into sys_role (id, name, type, 
-      remark)
+      remark, dept_id)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR})
+      #{remark,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zdy.model.SysRole">
     
@@ -47,6 +68,9 @@
       <if test="remark != null">
         remark,
       </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -60,6 +84,9 @@
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -76,6 +103,9 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -84,7 +114,10 @@
     update sys_role
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR}
+      remark = #{remark,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+ 
 </mapper>

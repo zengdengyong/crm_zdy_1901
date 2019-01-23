@@ -13,12 +13,12 @@
 	  <div class="panel-heading">菜单</div>
 	  <div class="panel-body">
 		<ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-	      <li role="presentation"  class="active"><a href="${pageContext.request.contextPath }/auth/goIndex">Home</a></li>
+	      <li role="presentation"  class="active"><a href="${pageContext.request.contextPath }/auth/index">Home</a></li>
 	     
 	      <li role="presentation"  class="menu-a" request-url="${pageContext.request.contextPath }/dept/selectAllDeptInfo"><a href="#">部门管理</a></li>
 	      <li role="presentation"  class="menu-a" request-url="${pageContext.request.contextPath }/user/selectAllUsers"><a href="#">用户管理</a></li>
+	      <li role="presentation"  class="menu-a" request-url="${pageContext.request.contextPath }/role/selectAllRoles"><a href="#">角色管理</a></li>
 	      <!-- ========================= -->
-	      <li role="presentation"  class="menu-a" request-url="${pageContext.request.contextPath }/role/roleManage"><a href="#">角色管理</a></li>
 	      <li role="presentation"  class="menu-a" request-url="${pageContext.request.contextPath }/resource/resourceManage"> <a href="#"">权限管理</a></li>
 	    </ul>
 	  </div>
@@ -29,7 +29,8 @@
 <script>
 
 
-
+/* 
+	//在index页面操作了这里就没有必要再操作了,两个地方有一处执行了就行=================
 $(function(){
 	//操作菜单
 	$("#menuDiv li.menu-a").on("click", function(event){
@@ -57,7 +58,7 @@ $(function(){
 	
 
 	
-})
+}) */
 
 </script>
 </html>

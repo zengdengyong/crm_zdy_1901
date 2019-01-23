@@ -48,6 +48,7 @@
 				<!--auth下的资源全都放行掉  -->
 				/auth/** = anon
 				/user/** = anon
+				/role/** = anon
 				<!-- 除了静态资源以外的请求都必须登录才能访问 -->
 				/** = authc
 			</value>

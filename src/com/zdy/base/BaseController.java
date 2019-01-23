@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.zdy.service.DeptService;
+import com.zdy.service.RoleService;
 import com.zdy.service.UserService;
 
 /**
@@ -31,6 +32,8 @@ public abstract class BaseController {
 	protected UserService userService;
 	@Resource
 	protected DeptService deptService;
+	@Resource
+	protected RoleService roleService;
 	
 	
 	

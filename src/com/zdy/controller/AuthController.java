@@ -31,6 +31,8 @@ import com.zdy.util.VerificationUtil;
 @Controller
 @RequestMapping("/auth")
 public class AuthController extends BaseController{
+	
+	
 	//登录页面
 	@RequestMapping(value="/login")
 	public String  login(){

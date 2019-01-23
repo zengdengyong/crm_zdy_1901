@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import com.zdy.mapper.SysDeptMapper;
+import com.zdy.mapper.SysRoleMapper;
 import com.zdy.mapper.SysUserMapper;
 
 /**
@@ -18,4 +19,7 @@ public abstract class BaseService {
 	protected SysUserMapper userMapper;
 	@Resource
 	protected SysDeptMapper deptMapper;
+	@Resource
+	protected SysRoleMapper roleMapper;
+	
 }
