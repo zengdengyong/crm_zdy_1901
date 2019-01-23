@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 扫描并识别shiro的注解 -->
+	<bean class=
+	"org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"></property>
+	</bean>
+
+	<!-- 安全管理器 >> DefalutWebSecurityManager -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- realm -->
+		<property name="realm" ref="userRealm"></property>
+		<property name="cacheManager" ref="cacheManager"></property>
+	</bean>
+	
+	<!-- 自定义realm -->
+	<bean id="userRealm" class="com.zdy.security.realm.UserRealm">
+		<!-- 注入凭证匹配器 -->
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+	</bean>
+	
+	<!-- 凭证匹配器  -->
+	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="MD5"></property>
+		<property name="hashIterations" value="2"></property>
+	</bean>
+	
+	
+	<!-- 配置过滤器 >> ShiroFilterFactoryBean -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注入安全管理器 -->
+		<property name="securityManager" ref="securityManager"></property>
+		<!-- 配置登录url -->
+		<property name="loginUrl" value="/auth/login"></property>
+		<!-- 配置登录成功的url -->
+		<property name="successUrl" value="/auth/index"></property>
+		
+		<!-- shiro的过滤器链 -->
+		<property name="filterChainDefinitions">
+			<value>
+			
+				<!-- 静态资源允许匿名访问 -->
+				/logins/** = anon
+				/resetPassword/** = anon
+				<!--auth下的资源全都放行掉  -->
+				/auth/** = anon
+				/user/** = anon
+				<!-- 除了静态资源以外的请求都必须登录才能访问 -->
+				/** = authc
+			</value>
+		</property>
+	
+	</bean>
+	
+	<!-- shiro的缓存管理, 可以减少授权信息对与数据库的访问 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"></bean>
+	
+
+
+</beans>

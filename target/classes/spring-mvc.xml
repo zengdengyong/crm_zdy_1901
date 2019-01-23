@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+
+
+	<!-- a.配置包扫描(只扫描controller组件) 
+		b.三大组件(<mvc:annotation-driven>) 
+		c.视图解析器
+		d.静态资源的处理 
+		e.文件上传解析器 
+		f.消息转换器工厂 
+		g.拦截器 -->
+	<!-- 配置包扫描 -->
+	<!-- <context:component-scan base-package="com.zdy" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan> -->
+	
+	
+	<context:component-scan base-package="com.zdy.controller"></context:component-scan>
+	<!-- 对异常的扫描 -->
+	<!-- <context:component-scan base-package="com.zdy.common"></context:component-scan> -->
+	
+	<!-- 对测试类的扫描 -->
+	<context:component-scan base-package="com.zdy.test1"></context:component-scan>
+	<context:component-scan base-package="com.zdy.util"></context:component-scan>
+	
+	
+	<!--三大组件  -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!--视图解析器  -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!--静态资源放行  -->
+	<mvc:default-servlet-handler/>
+	
+	<!--文件上传解析器  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+	
+	
+	
+	<!-- 消息转换工厂 -->
+<!-- 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set></set>
+		</property>
+	</bean> -->
+	
+	
+	<!--拦截器： 如果没有制定，默认拦截所有的handler  -->
+	<!-- <mvc:interceptors>
+		
+	</mvc:interceptors> -->
+	
+		<!-- 配置拦截器 ==================可以配置多个！！！暂时不用,用shiro框架替代 -->
+	<!-- <mvc:interceptors>
+		<mvc:interceptor>
+			先只拦截auth下的 
+			<mvc:mapping path="/auth/**"/>
+		
+			<mvc:exclude-mapping path="/auth/login"/>
+			<mvc:exclude-mapping path="/auth/getVerification"/>
+			<mvc:exclude-mapping path="/auth/validateMail"/>
+			<mvc:exclude-mapping path="/auth/alterPassword"/>
+			<mvc:exclude-mapping path="/auth/queryStudents"/>
+			======= 放行图片的静态资源
+			<mvc:exclude-mapping path="/logins/**"/> 
+			<bean class="com.zdy.interceptor.AuthInterceptor"></bean>
+		</mvc:interceptor>
+		
+	</mvc:interceptors> -->
+
+</beans>

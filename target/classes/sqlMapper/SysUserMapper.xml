@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdy.mapper.SysUserMapper">
+
+  <resultMap id="BaseResultMap" type="com.zdy.model.SysUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="user_dept_id" jdbcType="INTEGER" property="userDeptId" />
+    <result column="user_mail" jdbcType="VARCHAR" property="userMail" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+    
+  <resultMap id="BaseResultMapVo" type="com.zdy.vo.UserVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="dept_name" jdbcType="INTEGER" property="userDeptName" />
+    <result column="user_mail" jdbcType="VARCHAR" property="userMail" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  
+  <!-- sql片段 -->
+  <sql id="Base_Column_List">
+    id, user_name, user_password, user_dept_id, user_mail, remark
+  </sql>
+  
+  <!-- 查询所有的用户 -->
+  <select id="selectAllUsers" resultMap="BaseResultMapVo">
+  	SELECT  u.id,u.user_name,d.dept_name,u.user_mail,u.user_password,u.remark
+	FROM sys_user u
+	LEFT JOIN sys_dept d
+	ON u.user_dept_id = d.id
+  </select>
+  
+  <!--通过id查询对应的用户  -->
+  <select id="selectUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    <where>
+    	id = #{id,jdbcType=INTEGER}
+    </where>
+  </select>
+  
+  
+  <!-- 通过用户名或者邮箱查询=====用于shiro认证 -->
+  <select id="selectUserByNameAndPwd" resultMap="BaseResultMap">
+		SELECT * FROM sys_user u 
+		<where>
+			<if test=" userNameOrMail !=null and userNameOrMail != ''">
+				u.user_mail = #{userNameOrMail} 
+			</if>
+			<if test="userNameOrMail!=null and userNameOrMail != ''">
+				OR u.user_name = #{userNameOrMail} 
+			</if>
+		</where>
+	</select>
+	
+  <!-- 修改密码 -->
+  <update id="updatePassword" parameterType="com.zdy.model.SysUser">
+		UPDATE sys_user u
+		<set>
+			<if test="userPassword !=null and userPassword !=''">
+				u.user_password =#{userPassword} 
+			</if>
+		</set>
+		<where>
+			u.user_mail = #{userMail}
+		</where>
+	</update>
+  
+  
+  
+  
+  
+  
+  <!--删除  -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <!-- 全表添加 -->
+  <insert id="insert" parameterType="com.zdy.model.SysUser">
+    insert into sys_user (id, user_name, user_password, 
+      user_dept_id, user_mail, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userDeptId,jdbcType=INTEGER}, #{userMail,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!--添加  -->
+  <insert id="insertSelective" parameterType="com.zdy.model.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userDeptId != null">
+        user_dept_id,
+      </if>
+      <if test="userMail != null">
+        user_mail,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userDeptId != null">
+        #{userDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="userMail != null">
+        #{userMail,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新操作 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdy.model.SysUser">
+    update sys_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userDeptId != null">
+        user_dept_id = #{userDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="userMail != null">
+        user_mail = #{userMail,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 批量更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.zdy.model.SysUser">
+    update sys_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_dept_id = #{userDeptId,jdbcType=INTEGER},
+      user_mail = #{userMail,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
