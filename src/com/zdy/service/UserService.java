@@ -2,6 +2,8 @@ package com.zdy.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,18 @@ import com.zdy.vo.UserVo;
 @Service
 @Transactional
 public class UserService extends BaseService {
+	
+	
+	//通过部门id查询部门下所有的员工===并判断是否为空
+	public boolean hasUserByDeptId(Integer userDeptId){
+		List<SysUser> usersByDeptId = userMapper.selectUsersByDeptId(userDeptId);
+		boolean flag = true;
+		if(usersByDeptId.isEmpty()){
+			flag = false;
+		}
+		return flag;
+		
+	}
 	
 	//查询所有的用户=====分页
 	public PageInfo<UserVo> selectAllUsers(Integer page){

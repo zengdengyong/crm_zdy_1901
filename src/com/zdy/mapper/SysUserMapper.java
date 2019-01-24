@@ -8,11 +8,14 @@ import com.zdy.model.SysUser;
 import com.zdy.vo.UserVo;
 
 public interface SysUserMapper {
+	//通过部门id查询员工集合
+	List<SysUser> selectUsersByDeptId(@Param("userDeptId")Integer userDeptId);
+	
 	//查询所有的用户
 	List<UserVo> selectAllUsers();
 	
 	//通过id查询对用的用户信息
-	SysUser selectUserById(Integer id);
+	SysUser selectUserById(@Param("id")Integer id);
     
 	//查询用户名和密码是否有对应的user====用于自定义拦截器认证===暂时不用这个方法
 	SysUser selectUserAuth(

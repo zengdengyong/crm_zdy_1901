@@ -7,10 +7,12 @@
     <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="dept_info" jdbcType="VARCHAR" property="deptInfo" />
   </resultMap>
+  
   <sql id="Base_Column_List">
-    
     id, dept_name, dept_info
   </sql>
+  
+  
   
   <!--查询所有部门  -->
   
@@ -27,13 +29,42 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-  
-  
+  <!-- 通过id删除数据,直接用插件自动生成数据 -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    
     delete from sys_dept
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+   
+	<!--添加部门信息  -->
+	<!-- INSERT INTO sys_dept VALUES(5,"测试部","测试数据"); -->
+	<insert id="insertDeptInfo" parameterType="com.zdy.model.SysDept">
+		insert into sys_dept values(
+			null,
+			#{dept.deptName},
+			#{dept.deptInfo}
+		)
+		
+	</insert>
+  
+	<!-- 通部门id修改部门信息=====修改了用的自动生成的代码 -->
+	<update id="updateDeptInfoById" parameterType="com.zdy.model.SysDept">
+		update sys_dept
+		<set>
+			<if test="dept.deptName != null and dept.deptName!= '' " >
+				dept_name = #{dept.deptName,jdbcType=VARCHAR},
+			</if>
+			<if test="dept.deptInfo != null and dept.deptInfo != '' ">
+				dept_info = #{dept.deptInfo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{dept.id,jdbcType=INTEGER}
+	</update>
+  
+  
+  
+  <!-- 下面是自动生成=================================== -->
+  
   
   
   <insert id="insert" parameterType="com.zdy.model.SysDept">
@@ -43,8 +74,10 @@
     values (#{id,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR}, #{deptInfo,jdbcType=VARCHAR}
       )
   </insert>
+  
+  
+  <!-- ==============添加部门信息不好用================== -->
   <insert id="insertSelective" parameterType="com.zdy.model.SysDept">
-    
     insert into sys_dept
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -69,6 +102,9 @@
       </if>
     </trim>
   </insert>
+  
+  
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.zdy.model.SysDept">
     
     update sys_dept
@@ -82,6 +118,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.zdy.model.SysDept">
     
     update sys_dept

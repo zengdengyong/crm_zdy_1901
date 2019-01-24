@@ -27,6 +27,18 @@
     id, user_name, user_password, user_dept_id, user_mail, remark
   </sql>
   
+  <!--通过部门id查询该部门所有员工  -->
+  	<!-- SELECT u.id,u.user_dept_id,u.user_mail,u.user_name,u.user_password,u.remark -->
+  <select id="selectUsersByDeptId" resultMap="BaseResultMap">
+  	 SELECT 
+    <include refid="Base_Column_List" />
+	FROM sys_user
+		<where>
+			user_dept_id = #{userDeptId}
+		</where>
+  </select>
+  
+  
   <!-- 查询所有的用户 -->
   <select id="selectAllUsers" resultMap="BaseResultMapVo">
   	SELECT  u.id,u.user_name,d.dept_name,u.user_mail,u.user_password,u.remark
@@ -75,7 +87,7 @@
   
   
   
-  
+  <!-- ====================================== -->
   
   <!--删除  -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

@@ -19,8 +19,10 @@
 					<h4 class="modal-title" id="exampleModalLabel">编辑客户:</h4>
 				</div>
 				<br />
-
-				<form action="${pageContext.request.contextPath }/dept/updateDept" method="post">
+				
+				
+					<!--action="${pageContext.request.contextPath }/dept/updateDeptInfoById" method="post"  -->
+				<form>
 					<!-- 隐藏域,用于添加id -->
 					<input type="hidden" name="id" id="updateDeptId" value="" />
 					
@@ -39,7 +41,8 @@
 					<br /> <br /> <br /> <br />
 					<div class="modal-footer">
 						<button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
-						<button type="submit" class="btn btn-primary" >提交</button>
+						<!-- <button type="submit" class="btn btn-primary" >提交</button> -->
+						<button type="button" class="btn btn-primary" id ="btn_update" >提交</button>
 					</div>
 
 				</form>
@@ -58,25 +61,54 @@
 	function updateDept(id){
 		$("#updateDeptId").attr('value',id);//隐藏域的id=updateDeptId
 	}
-	//查询用户并回显
+	//查询部门信息并回显
 	$(function () {
 		$('#updateDeptModel').on('shown.bs.modal', function (e) {
 			var param={
 				"id":$("#updateDeptId").val()
 			}
 			$.ajax({
-				url: "${pageContext.request.contextPath }/dept/selectDeptOne",
+				url: "${pageContext.request.contextPath }/dept/selectByPrimaryKey",
 				type : "get",
 				//async:false,
 				data: param,
 				success: function(res){
-					$("#deptName_id").val(res.deptName);
-					$("#deptInfo_id").val(res.deptInfo);
+					if(res.success){
+						$("#deptName_id").val(res.data.deptName);
+						$("#deptInfo_id").val(res.data.deptInfo);
+						
+					}
 					
 				} 
 			})
 		})
 	})
+	//====修改数据====用异步先
+	$(function () {
+	$("#btn_update").on("click",function(){
+		 debugger;
+		//添加用户 
+		var param = {
+				"id":$("#updateDeptId").val(),
+				"deptName":$("#deptName_id").val(),
+				"deptInfo":$("#deptInfo_id").val()
+		}
+		$.ajax({
+			url: "${pageContext.request.contextPath }/dept/updateDeptInfoById",
+			type : "post",
+			data:param,
+			success:function(result){
+				 if(result){  
+					$("#content").html(result);
+					$(".modal-backdrop").remove();//手动关闭遮罩层
+					/*  $('.modal-backdrop').css('background','none');
+					$('.modal-backdrop').css('z-index','-999');  */
+				} 
+			}  
+		})
+	})
+})
+
 
 </script>
 	

@@ -66,33 +66,40 @@
 </div>
 
 <script>
+
 //删除客户资料
 function deleteDept(id){
 	//阻止浏览器默认行为
 	event.preventDefault();
 	//阻止事件冒泡
 	event.stopPropagation();
+	debugger;
 	if(confirm("确定删除么?")){
-		
 		var param={
-				"id":id
+				"userDeptId":id
 			}
 			$.ajax({
-				url: "${pageContext.request.contextPath }/dept/deleteDept",
+				url: "${pageContext.request.contextPath }/dept/deleteByPrimaryKey",
 				type : "post",
 				data: param,
+				dataType: "json",
 				success: function(result){
-					if(result){
-						$("#content").html(result);
-
+					if(result.success){
+						alert("删除成功!");
+						
+					}else {
+						alert(result.message);
 					}
-				} 
+				} ,error:function(){
+					debugger;
+					alert("请求失败!")
+				}
+				 
+				
+				
 			})
 	}
 }
-	
-
-	
 
 
 </script>
